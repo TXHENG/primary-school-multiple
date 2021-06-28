@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>乘法表</title>
+	<link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-blue-50">
+	<div class="container mx-auto p-3 flex flex-col items-center">
+		<h1 class="text-center font-bold text-5xl m-3">乘法表</h1>
+		<p class="text-center text-5xl font-bold m-3"><span class="inline-block w-16 h-16 align-middle text-center rounded-md border-2" data-num1></span> x <span class="inline-block w-16 h-16 align-middle text-center rounded-md border-2" data-num2></span> = ?</p>
+		<input type="number" name="answer" id="answer" class="p-3 rounded-md focus:outline-none focus:ring-2 w-32 text-lg m-1" />
+		<button id="btn" class="p-2 bg-blue-500 rounded focus:outline-none focus:ring-2 w-32 text-lg text-white hover:bg-blue-700 m-1">提交</button>
+		<p class="text-center text-2xl font-bold m-1"><span class="inline-block w-10 h-10 align-middle text-center rounded-md border-2 text-green-500" data-correct>0</span> : <span class="inline-block w-10 h-10 align-middle text-center rounded-md border-2 text-red-500" data-wrong>0</span></p>
+		<p class="text-center text-5xl font-bold m-3" data-alert></p>
+	</div>
+</body>
+<script>
+	const num1 = document.querySelector('[data-num1]')
+	const num2 = document.querySelector('[data-num2]')
+	const correct = document.querySelector('[data-correct]')
+	const wrong = document.querySelector('[data-wrong]')
+	const answer = document.querySelector('[name="answer"]')
+	const alert_field = document.querySelector('[data-alert]')
+	const newNumber = () => {
+		num1.innerHTML = Math.ceil(Math.random() * 12)
+		num2.innerHTML = Math.ceil(Math.random() * 12)
+	}
+	const handleSubmit = () => {
+		let cal_answer = parseInt(num1.innerHTML) * parseInt(num2.innerHTML)
+		if( cal_answer == answer.value ){
+			alert_field.innerHTML = "回答正确!"
+			alert_field.classList.add('text-green-400')
+			alert_field.classList.remove('text-red-400')
+			correct.innerHTML = parseInt(correct.innerHTML) + 1
+		} else {
+			alert_field.innerHTML = answer.value + " 是错误的! " + num1.innerHTML + " x " + num2.innerHTML + " = " + cal_answer
+			alert_field.classList.add('text-red-400')
+			alert_field.classList.remove('text-green-400')
+			wrong.innerHTML = parseInt(wrong.innerHTML) + 1
+		}
+		answer.value=""
+		newNumber()	
+	}
+	answer.addEventListener('keydown', (e) => {
+		if(e.key != "Enter") return
+		handleSubmit()
+	})
+	document.querySelector('#btn').addEventListener('click', handleSubmit)
+
+	newNumber()
+</script>
+</html>
